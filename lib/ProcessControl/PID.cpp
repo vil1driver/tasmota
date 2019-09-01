@@ -180,7 +180,11 @@ void PID::setDSmooth( double smooth_factor ) {
 }
 
 void PID::setAuto( unsigned char mode_auto ) {
-  m_mode_auto = mode_auto;
+  if (mode_auto == 2) {
+    m_mode_auto = (m_mode_auto == 1) ? 0 : 1;
+  } else {
+    m_mode_auto = mode_auto;
+  }  
 }
 
 void PID::setManualPower( double manual_op ) {
@@ -189,4 +193,13 @@ void PID::setManualPower( double manual_op ) {
 
 void PID::setMaxInterval( int max_interval ) {
   m_max_interval = max_interval;
+}
+double PID::showSp(){
+  return m_setpoint;
+}
+unsigned char PID::showMode(){
+  return m_mode_auto;
+}
+double PID::showOutput(){
+  return m_last_power;
 }

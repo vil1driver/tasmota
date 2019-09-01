@@ -218,7 +218,7 @@ void Ds18b20Show(bool json)
 #endif  // USE_KNX
 #ifdef USE_WEBSERVER
     } else {
-      WSContentSend_PD(HTTP_SNS_TEMP, ds18b20_types, temperature, TempUnit());
+      WSContentSend_PD(HTTP_SNS_TEMP, temperature, TempUnit());
 #endif  // USE_WEBSERVER
     }
   }

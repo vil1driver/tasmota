@@ -124,7 +124,7 @@
 
 #ifdef USE_PID
 
-# include "PID.h"
+#include "PID.h"
 
 #define D_CMND_PID "pid_"
 
@@ -364,6 +364,17 @@ boolean Xdrv92(byte function)
   case FUNC_COMMAND:
     result = PID_Command();
     break;
+#ifdef USE_WEBSERVER
+  case FUNC_WEB_SENSOR:
+    char spString[33];  //  Hold The Convert Data
+    char lpString[33];  //  Hold The Convert Data
+    dtostrfd(pid.showSp(), Settings.flag2.temperature_resolution, spString);
+    dtostrfd(pid.showOutput() * 100, 0, lpString);
+    WSContentSend_PD(HTTP_PID_SETPOINT, spString, TempUnit());
+    WSContentSend_PD(HTTP_PID_MODE, (pid.showMode() == 1) ? "Auto" : "Manu");
+    WSContentSend_PD(HTTP_PID_OUTPUT, lpString);
+    break;
+#endif  // USE_WEBSERVER  
   }
   return result;
 }

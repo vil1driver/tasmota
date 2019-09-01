@@ -112,6 +112,8 @@ const char HTTP_SCRIPT_ROOT[] PROGMEM =
 #ifdef USE_JAVASCRIPT_ES6
   "lb=p=>la('&d='+p);"                    // Dark - Bright &d related to lb(value) and WebGetArg("d", tmp, sizeof(tmp));
   "lc=p=>la('&t='+p);"                    // Cold - Warm &t related to lc(value) and WebGetArg("t", tmp, sizeof(tmp));
+  "lp=p=>la('&p='+p);"                    // setpoint &p related to lp(value) and WebGetArg("p", tmp, sizeof(tmp));
+  "lu=p=>la('&u='+p);"                    // auto/manu &u related to lu(value) and WebGetArg("u", tmp, sizeof(tmp));
 #else
   "function lb(p){"
     "la('&d='+p);"                        // &d related to WebGetArg("d", tmp, sizeof(tmp));
@@ -119,6 +121,12 @@ const char HTTP_SCRIPT_ROOT[] PROGMEM =
   "function lc(p){"
     "la('&t='+p);"                        // &t related to WebGetArg("t", tmp, sizeof(tmp));
   "}"
+  "function lp(p){"
+    "la('&p='+p);"                        // &p related to WebGetArg("p", tmp, sizeof(tmp));
+  "}"
+  "function lu(p){"
+    "la('&u='+p);"                        // &u related to WebGetArg("u", tmp, sizeof(tmp));
+  "}"  
 #endif
 
   "wl(la);";
@@ -293,18 +301,20 @@ const char HTTP_HEAD_LAST_SCRIPT[] PROGMEM =
 
 const char HTTP_HEAD_STYLE1[] PROGMEM =
   "<style>"
-  "div,fieldset,input,select{padding:5px;font-size:1em;}"
+  "div,fieldset,input,select{font-size:1em;}"
   "fieldset{background:#%06x;}"  // COLOR_FORM, Also update HTTP_TIMER_STYLE
   "p{margin:0.5em 0;}"
   "input{width:100%%;box-sizing:border-box;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;background:#%06x;color:#%06x;}"  // COLOR_INPUT, COLOR_INPUT_TEXT
   "input[type=checkbox],input[type=radio]{width:1em;margin-right:6px;vertical-align:-1px;}"
+  "input[type=range]{-webkit-appearance: none;padding: 0;font: inherit;outline: none;opacity: 0.2;background: #CCC;box-sizing: border-box;cursor: pointer;}"
+  "input[type=range]::-webkit-slider-thumb { -webkit-appearance: none;width: 1px;padding: 0.25em;border: 0px;background: transparent;}"
   "select{width:100%%;background:#%06x;color:#%06x;}"  // COLOR_INPUT, COLOR_INPUT_TEXT
   "textarea{resize:none;width:98%%;height:318px;padding:5px;overflow:auto;background:#%06x;color:#%06x;}"  // COLOR_CONSOLE, COLOR_CONSOLE_TEXT
   "body{text-align:center;font-family:verdana,sans-serif;background:#%06x;}"  // COLOR_BACKGROUND
   "td{padding:0px;}";
 const char HTTP_HEAD_STYLE2[] PROGMEM =
-  "button{border:0;border-radius:0.3rem;background:#%06x;color:#%06x;line-height:2.4rem;font-size:1.2rem;width:100%%;-webkit-transition-duration:0.4s;transition-duration:0.4s;cursor:pointer;}"  // COLOR_BUTTON, COLOR_BUTTON_TEXT
-  "button:hover{background:#%06x;}"  // COLOR_BUTTON_HOVER
+  "button{outline: none;border:0;border-radius:0.3rem;background:#%06x;color:#%06x;line-height:2.4rem;font-size:1.2rem;width:100%%;cursor:pointer;}"  // COLOR_BUTTON, COLOR_BUTTON_TEXT
+  //"button:hover{background:#%06x;}"  // COLOR_BUTTON_HOVER
   ".bred{background:#%06x;}"  // COLOR_BUTTON_RESET
   ".bred:hover{background:#%06x;}"  // COLOR_BUTTON_RESET_HOVER
   ".bgrn{background:#%06x;}"  // COLOR_BUTTON_SAVE
@@ -321,11 +331,11 @@ const char HTTP_HEAD_STYLE3[] PROGMEM =
 #ifdef FIRMWARE_MINIMAL
   "<div style='text-align:center;color:#%06x;'><h3>" D_MINIMAL_FIRMWARE_PLEASE_UPGRADE "</h3></div>"  // COLOR_TEXT_WARNING
 #endif
-  "<div style='text-align:center;'><noscript>" D_NOSCRIPT "<br></noscript>"
+  "<div style='text-align:center;'><noscript>" D_NOSCRIPT "<br>"
 #ifdef LANGUAGE_MODULE_NAME
-  "<h3>" D_MODULE " %s</h3>"
+  "<h3>" D_MODULE " %s</h3></noscript>"
 #else
-  "<h3>%s " D_MODULE "</h3>"
+  "<h3>%s " D_MODULE "</h3></noscript>"
 #endif
   "<h2>%s</h2>";
 
@@ -335,6 +345,9 @@ const char HTTP_MSG_SLIDER1[] PROGMEM =
 const char HTTP_MSG_SLIDER2[] PROGMEM =
   "<div><span class='p'>" D_DARKLIGHT "</span><span class='q'>" D_BRIGHTLIGHT "</span></div>"
   "<div><input type='range' min='1' max='100' value='%d' onchange='lb(value)'></div>";
+const char HTTP_MSG_SLIDER3[] PROGMEM =
+  "<div><span class='p'>15&deg;C</span><span class='q'>25&deg;C</span></div>"
+  "<div><input style='background: linear-gradient(to right, green, orange, orange, red )' type='range' min='15' max='25' step='0.5' value='%d' oninput='lp(value)'></div>";  
 const char HTTP_MSG_RSTRT[] PROGMEM =
   "<br><div style='text-align:center;'>" D_DEVICE_WILL_RESTART "</div><br>";
 
@@ -431,13 +444,20 @@ const char HTTP_COUNTER[] PROGMEM =
   "<br><div id='t' style='text-align:center;'></div>";
 
 const char HTTP_END[] PROGMEM =
-  "<div style='text-align:right;font-size:11px;'><hr/><a href='https://bit.ly/tasmota' target='_blank' style='color:#aaa;'>Sonoff-Tasmota %s " D_BY " Theo Arends</a></div>"
+  //"<div style='text-align:right;font-size:11px;'><hr/><a href='https://bit.ly/tasmota' target='_blank' style='color:#aaa;'>Sonoff-Tasmota %s " D_BY " Theo Arends</a></div>"
   "</div>"
   "</body>"
   "</html>";
 
 const char HTTP_DEVICE_CONTROL[] PROGMEM = "<td style='width:%d%%'><button onclick='la(\"&o=%d\");'>%s%s</button></td>";  // ?o is related to WebGetArg("o", tmp, sizeof(tmp));
+const char HTTP_PID_CONTROL[] PROGMEM = "<td style='width:100%%'><button onclick='la(\"&u=2\");'>Auto / Manu</button></td>";  // ?u is related to WebGetArg("u", tmp, sizeof(tmp));
 const char HTTP_DEVICE_STATE[] PROGMEM = "<td style='width:%d{c}%s;font-size:%dpx'>%s</div></td>";  // {c} = %'><div style='text-align:center;font-weight:
+const char HTTP_PID_STATE_OFF[] PROGMEM = "<td style='width:100%%'><svg viewBox='50 260 300 100'><path fill='#13EB13' d='M 1.2000000000000002 33.6 c 9.600000000000001 6.800000000000001 20.400000000000002 7.2 29.200000000000003 -2.4000000000000004 C 40 20.8 40 8.8 40 1.6 c -5.2 6 -14.8 3.6 -28 7.6000000000000005 C 1.6 12.8 0 25.200000000000003 0 30.400000000000002 c 2.4000000000000004 -2.8000000000000003 7.2 -6.800000000000001 13.200000000000001 -9.200000000000001 9.600000000000001 -3.6 13.600000000000001 -3.6 19.200000000000003 -8 -3.6 4 -8 6.4 -17.2 9.600000000000001 C 8.8 25.200000000000003 3.2 31.200000000000003 1.2000000000000002 33.6 z' transform='translate(180,300)'></path></svg></div></td>";
+const char HTTP_PID_STATE_ON[] PROGMEM = "<td style='width:100%%'><svg viewBox='-70 60 300 100'><path fill='#F36E21' d='M76.553,186.09c0,0-10.178-2.976-15.325-8.226s-9.278-16.82-9.278-16.82s-0.241-6.647-4.136-18.465 c0,0,3.357,4.969,5.103,9.938c0,0-5.305-21.086,1.712-30.418c7.017-9.333,0.571-35.654-2.25-37.534c0,0,13.07,5.64,19.875,47.54	c6.806,41.899,16.831,45.301,6.088,53.985'></path>"
+"<path fill='#F6891F' d='M61.693,122.257c4.117-15.4,12.097-14.487-11.589-60.872c0,0,32.016,10.223,52.601,63.123 c20.585,52.899-19.848,61.045-19.643,61.582c0.206,0.537-19.401-0.269-14.835-18.532S57.576,137.656,61.693,122.257z'></path>"
+"<path fill='#FDBA16' d='M99.92,101.754c0,0-23.208,47.027-12.043,80.072c0,0,32.741-16.073,20.108-45.79	C95.354,106.319,99.92,114.108,99.92,101.754z'></path>"
+"</svg></div></td>";
+const char HTTP_SPACE[] PROGMEM = "<td style='height:150px'></td>";
 
 enum ButtonTitle {
   BUTTON_RESTART, BUTTON_RESET_CONFIGURATION,
@@ -951,7 +971,13 @@ void HandleRoot(void)
     } else {
       for (uint32_t idx = 1; idx <= devices_present; idx++) {
         snprintf_P(stemp, sizeof(stemp), PSTR(" %d"), idx);
+  #ifdef USE_PID
+        WSContentSend_P(HTTP_MSG_SLIDER3, 20);
+        WSContentSend_P(HTTP_SPACE);
+        WSContentSend_P(HTTP_PID_CONTROL);
+  #else
         WSContentSend_P(HTTP_DEVICE_CONTROL, 100 / devices_present, idx, (devices_present < 5) ? D_BUTTON_TOGGLE : "", (devices_present > 1) ? stemp : "");
+  #endif      
       }
     }
     WSContentSend_P(PSTR("</tr></table>"));
@@ -1028,6 +1054,16 @@ bool HandleRootStatusRefresh(void)
     snprintf_P(svalue, sizeof(svalue), PSTR(D_CMND_COLORTEMPERATURE " %s"), tmp);
     ExecuteWebCommand(svalue, SRC_WEBGUI);
   }
+  WebGetArg("p", tmp, sizeof(tmp));  // 10 - 30 pid setpoint
+  if (strlen(tmp)) {
+    snprintf_P(svalue, sizeof(svalue), PSTR("PID_SP" " %s"), tmp);
+    ExecuteWebCommand(svalue, SRC_WEBGUI);
+  }
+  WebGetArg("u", tmp, sizeof(tmp));  // pid auto/manu toggle
+  if (strlen(tmp)) {
+    snprintf_P(svalue, sizeof(svalue), PSTR("PID_AUTO" " %s"), tmp);
+    ExecuteWebCommand(svalue, SRC_WEBGUI);
+  }    
   WebGetArg("k", tmp, sizeof(tmp));  // 1 - 16 Pre defined RF keys
   if (strlen(tmp)) {
     snprintf_P(svalue, sizeof(svalue), PSTR(D_CMND_RFKEY "%s"), tmp);
@@ -1037,6 +1073,7 @@ bool HandleRootStatusRefresh(void)
   WSContentBegin(200, CT_HTML);
   WSContentSend_P(PSTR("{t}"));
   XsnsCall(FUNC_WEB_SENSOR);
+  XdrvCall(FUNC_WEB_SENSOR);
   WSContentSend_P(PSTR("</table>"));
 
   if (devices_present) {
@@ -1050,7 +1087,11 @@ bool HandleRootStatusRefresh(void)
     } else {
       for (uint32_t idx = 1; idx <= devices_present; idx++) {
         snprintf_P(svalue, sizeof(svalue), PSTR("%d"), bitRead(power, idx -1));
-        WSContentSend_P(HTTP_DEVICE_STATE, 100 / devices_present, (bitRead(power, idx -1)) ? "bold" : "normal", fsize, (devices_present < 5) ? GetStateText(bitRead(power, idx -1)) : svalue);
+      #ifdef USE_PID
+        WSContentSend_P((bitRead(power, idx -1)) ? HTTP_PID_STATE_ON : HTTP_PID_STATE_OFF);
+      #else
+          WSContentSend_P(HTTP_DEVICE_STATE, 100 / devices_present, (bitRead(power, idx -1)) ? "bold" : "normal", fsize, (devices_present < 5) ? GetStateText(bitRead(power, idx -1)) : svalue);  
+      #endif
       }
     }
     WSContentSend_P(PSTR("</tr></table>"));

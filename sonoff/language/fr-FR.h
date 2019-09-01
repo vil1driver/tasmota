@@ -154,6 +154,9 @@
 #define D_SUNRISE "Lever du jour"
 #define D_SUNSET "Tombée de la nuit"
 #define D_TEMPERATURE "Température"
+#define D_PID_SETPOINT "Consigne"
+#define D_PID_MODE "Mode"
+#define D_PID_OUTPUT "Puissance"
 #define D_TO "à"
 #define D_TOGGLE "Inverser"
 #define D_TOPIC "Topic"      // Keep MQTT keyword

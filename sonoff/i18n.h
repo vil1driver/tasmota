@@ -426,6 +426,7 @@
 #define D_CMND_LATITUDE "Latitude"
 #define D_CMND_LONGITUDE "Longitude"
 
+
 /********************************************************************************************/
 
 #define D_ASTERISK_PWD "****"
@@ -569,7 +570,10 @@ const char kOptionBlinkOff[] PROGMEM = "BLINKOFF|" D_BLINKOFF ;
 
 // xdrv_02_webserver.ino
 #ifdef USE_WEBSERVER
-const char HTTP_SNS_TEMP[] PROGMEM = "{s}%s " D_TEMPERATURE "{m}%s&deg;%c{e}";                    // {s} = <tr><th>, {m} = </th><td>, {e} = </td></tr>
+const char HTTP_SNS_TEMP[] PROGMEM = "{s}" D_TEMPERATURE "{m}%s&deg;%c{e}";                       // {s} = <tr><th>, {m} = </th><td>, {e} = </td></tr>
+const char HTTP_PID_SETPOINT[] PROGMEM = "{s}" D_PID_SETPOINT "{m}%s&deg;%c{e}";                  // {s} = <tr><th>, {m} = </th><td>, {e} = </td></tr>
+const char HTTP_PID_MODE[] PROGMEM = "{s}" D_PID_MODE "{m}%s{e}";                                 // {s} = <tr><th>, {m} = </th><td>, {e} = </td></tr>
+const char HTTP_PID_OUTPUT[] PROGMEM = "{s}" D_PID_OUTPUT "{m}%s%%{e}";                           // {s} = <tr><th>, {m} = </th><td>, {e} = </td></tr>
 const char HTTP_SNS_HUM[] PROGMEM = "{s}%s " D_HUMIDITY "{m}%s%%{e}";                             // {s} = <tr><th>, {m} = </th><td>, {e} = </td></tr>
 const char HTTP_SNS_PRESSURE[] PROGMEM = "{s}%s " D_PRESSURE "{m}%s %s{e}";                       // {s} = <tr><th>, {m} = </th><td>, {e} = </td></tr>
 const char HTTP_SNS_SEAPRESSURE[] PROGMEM = "{s}%s " D_PRESSUREATSEALEVEL "{m}%s %s{e}";          // {s} = <tr><th>, {m} = </th><td>, {e} = </td></tr>

@@ -782,11 +782,15 @@ const mytmplt kModules[MAXMODULE] PROGMEM = {
      ADC0_USER         // ADC0 Analog input
   },
   { "Sonoff TH",       // Sonoff TH10/16 (ESP8266)
-     GPIO_KEY1,        // GPIO00 Button
-     GPIO_USER,        // GPIO01 Serial RXD and Optional sensor
+     //GPIO_KEY1,        // GPIO00 Button
+     GPIO_NONE,        // GPIO00 Button
+     //GPIO_USER,        // GPIO01 Serial RXD and Optional sensor
+     GPIO_NONE,        // GPIO01 Serial RXD and Optional sensor
      0,
-     GPIO_USER,        // GPIO03 Serial TXD and Optional sensor
-     GPIO_USER,        // GPIO04 Optional sensor
+     //GPIO_USER,        // GPIO03 Serial TXD and Optional sensor
+     GPIO_NONE,        // GPIO03 Serial TXD and Optional sensor
+     //GPIO_USER,        // GPIO04 Optional sensor
+     GPIO_NONE,        // GPIO04 Optional sensor
      0,
                        // GPIO06 (SD_CLK   Flash)
                        // GPIO07 (SD_DATA0 Flash QIO/DIO/DOUT)
@@ -796,7 +800,8 @@ const mytmplt kModules[MAXMODULE] PROGMEM = {
                        // GPIO11 (SD_CMD   Flash)
      GPIO_REL1,        // GPIO12 Red Led and Relay (0 = Off, 1 = On)
      GPIO_LED1_INV,    // GPIO13 Green Led (0 = On, 1 = Off) - Link and Power status
-     GPIO_USER,        // GPIO14 Optional sensor
+     //GPIO_USER,        // GPIO14 Optional sensor
+     GPIO_DSB,        // GPIO14 Optional sensor
      0, 0, 0
   },
   { "Sonoff Dual",     // Sonoff Dual (ESP8266)

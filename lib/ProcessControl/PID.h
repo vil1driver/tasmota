@@ -64,6 +64,9 @@ public:
   void setAuto( unsigned char mode_auto );
   void setManualPower( double manual_op );
   void setMaxInterval( int max_interval );
+  double showSp();  // for web interface
+  unsigned char showMode();  // for web interface
+  double showOutput();  // for web interface
 
 private:
   double m_pv;
