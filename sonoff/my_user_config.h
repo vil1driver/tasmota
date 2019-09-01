@@ -44,28 +44,28 @@
 \*********************************************************************************************/
 
 // -- Master parameter control --------------------
-#define CFG_HOLDER             4617              // [Reset 1] Change this value (max 32000) to load SECTION1 configuration parameters to flash
+#define CFG_HOLDER             4600              // [Reset 1] Change this value (max 32000) to load SECTION1 configuration parameters to flash
 
 // -- Project -------------------------------------
 #define PROJECT                "sonoff"          // PROJECT is used as the default topic delimiter
 
 // If not selected the default will be SONOFF_BASIC
-//#define MODULE                 SONOFF_BASIC      // [Module] Select default model from sonoff_template.h
+#define MODULE                 SONOFF_TH      // [Module] Select default model from sonoff_template.h
 
-#define SAVE_DATA              1                 // [SaveData] Save changed parameters to Flash (0 = disable, 1 - 3600 seconds)
-#define SAVE_STATE             1                 // [SetOption0] Save changed power state to Flash (0 = disable, 1 = enable)
-#define BOOT_LOOP_OFFSET       1                 // [SetOption36] Number of boot loops before starting restoring defaults (0 = disable, 1..200 = boot loops offset)
+#define SAVE_DATA              0                 // [SaveData] Save changed parameters to Flash (0 = disable, 1 - 3600 seconds)
+#define SAVE_STATE             0                 // [SetOption0] Save changed power state to Flash (0 = disable, 1 = enable)
+#define BOOT_LOOP_OFFSET       0                 // [SetOption36] Number of boot loops before starting restoring defaults (0 = disable, 1..200 = boot loops offset)
 
 // -- Wifi ----------------------------------------
-#define WIFI_IP_ADDRESS        "0.0.0.0"         // [IpAddress1] Set to 0.0.0.0 for using DHCP or enter a static IP address
-#define WIFI_GATEWAY           "192.168.1.1"     // [IpAddress2] If not using DHCP set Gateway IP address
+#define WIFI_IP_ADDRESS        "192.168.22.60"         // [IpAddress1] Set to 0.0.0.0 for using DHCP or enter a static IP address
+#define WIFI_GATEWAY           "192.168.22.1"     // [IpAddress2] If not using DHCP set Gateway IP address
 #define WIFI_SUBNETMASK        "255.255.255.0"   // [IpAddress3] If not using DHCP set Network mask
-#define WIFI_DNS               "192.168.1.1"     // [IpAddress4] If not using DHCP set DNS IP address (might be equal to WIFI_GATEWAY)
+#define WIFI_DNS               "192.168.22.2"     // [IpAddress4] If not using DHCP set DNS IP address (might be equal to WIFI_GATEWAY)
 
-#define STA_SSID1              ""                // [Ssid1] Wifi SSID
-#define STA_PASS1              ""                // [Password1] Wifi password
-#define STA_SSID2              ""                // [Ssid2] Optional alternate AP Wifi SSID
-#define STA_PASS2              ""                // [Password2] Optional alternate AP Wifi password
+#define STA_SSID1              "air-master"                // [Ssid1] Wifi SSID
+#define STA_PASS1              "*************"                // [Password1] Wifi password
+#define STA_SSID2              "air-master"                // [Ssid2] Optional alternate AP Wifi SSID
+#define STA_PASS2              "*************"                // [Password2] Optional alternate AP Wifi password
 #define WIFI_CONFIG_TOOL       WIFI_RETRY        // [WifiConfig] Default tool if wifi fails to connect
                                                  //   (WIFI_RESTART, WIFI_SMARTCONFIG, WIFI_MANAGER, WIFI_WPSCONFIG, WIFI_RETRY, WIFI_WAIT, WIFI_SERIAL)
 #define WIFI_CONFIG_NO_SSID    WIFI_WPSCONFIG    // Default tool if wifi fails to connect and no SSID is configured
@@ -85,7 +85,7 @@
 #define OTA_URL                "http://thehackbox.org/tasmota/release/sonoff.bin"  // [OtaUrl]
 
 // -- MQTT ----------------------------------------
-#define MQTT_USE               1                 // [SetOption3] Select default MQTT use (0 = Off, 1 = On)
+#define MQTT_USE               0                 // [SetOption3] Select default MQTT use (0 = Off, 1 = On)
 
 #define MQTT_HOST              ""                // [MqttHost]
 #define MQTT_FINGERPRINT1      "00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00"  // [MqttFingerprint1]
@@ -121,8 +121,8 @@
 #define MQTT_CLIENT_ID         "DVES_%06X"       // [MqttClient] Also fall back topic using Chip Id = last 6 characters of MAC address
 
 // -- MQTT - Telemetry ----------------------------
-#define TELE_PERIOD            300               // [TelePeriod] Telemetry (0 = disable, 10 - 3600 seconds)
-#define TELE_ON_POWER          0                 // [SetOption59] send tele/STATE together with stat/RESULT (0 = Disable, 1 = Enable)
+#define TELE_PERIOD            30               // [TelePeriod] Telemetry (0 = disable, 10 - 3600 seconds)
+#define TELE_ON_POWER         0                 // [SetOption59] send tele/STATE together with stat/RESULT (0 = Disable, 1 = Enable)
 
 // -- MQTT - Domoticz -----------------------------
 #define DOMOTICZ_UPDATE_TIMER  0                 // [DomoticzUpdateTimer] Send relay status (0 = disable, 1 - 3600 seconds)
@@ -131,9 +131,9 @@
 #define HOME_ASSISTANT_DISCOVERY_ENABLE   0      // [SetOption19] Home Assistant Discovery (0 = Disable, 1 = Enable)
 
 // -- HTTP ----------------------------------------
-#define WEB_SERVER             2                 // [WebServer] Web server (0 = Off, 1 = Start as User, 2 = Start as Admin)
+#define WEB_SERVER             1                 // [WebServer] Web server (0 = Off, 1 = Start as User, 2 = Start as Admin)
 #define WEB_PASSWORD           ""                // [WebPassword] Web server Admin mode Password for WEB_USERNAME (empty string = Disable)
-#define FRIENDLY_NAME          "Sonoff"          // [FriendlyName] Friendlyname up to 32 characters used by webpages and Alexa
+#define FRIENDLY_NAME          "Chauffage SDB"          // [FriendlyName] Friendlyname up to 32 characters used by webpages and Alexa
 #define EMULATION              EMUL_NONE         // [Emulation] Select Belkin WeMo (single relay/light) or Hue Bridge emulation (multi relay/light) (EMUL_NONE, EMUL_WEMO or EMUL_HUE)
 // HTML hex color codes. Only 3 and 6 digit hex string values are supported!! See https://www.w3schools.com/colors/colors_hex.asp
 #define COLOR_TEXT                  "#000"       // [WebColor1] Global text color - Black
@@ -159,9 +159,9 @@
 #define MDNS_ENABLED           0                 // [SetOption55] Use mDNS (0 = Disable, 1 = Enable)
 
 // -- Time - Up to three NTP servers in your region
-#define NTP_SERVER1            "pool.ntp.org"       // [NtpServer1] Select first NTP server by name or IP address (129.250.35.250)
-#define NTP_SERVER2            "nl.pool.ntp.org"    // [NtpServer2] Select second NTP server by name or IP address (5.39.184.5)
-#define NTP_SERVER3            "0.nl.pool.ntp.org"  // [NtpServer3] Select third NTP server by name or IP address (93.94.224.67)
+#define NTP_SERVER1            "fr.pool.ntp.org"       // [NtpServer1] Select first NTP server by name or IP address (129.250.35.250)
+#define NTP_SERVER2            "0.fr.pool.ntp.org"    // [NtpServer2] Select second NTP server by name or IP address (5.39.184.5)
+#define NTP_SERVER3            "1.fr.pool.ntp.org"  // [NtpServer3] Select third NTP server by name or IP address (93.94.224.67)
 
 // -- Time - Start Daylight Saving Time and timezone offset from UTC in minutes
 #define TIME_DST_HEMISPHERE    North             // [TimeDst] Hemisphere (0 or North, 1 or South)
@@ -225,7 +225,7 @@
 //#define MY_LANGUAGE            el-GR           // Greek in Greece
 //#define MY_LANGUAGE            en-GB           // English in Great Britain. Enabled by Default
 //#define MY_LANGUAGE            es-ES           // Spanish in Spain
-//#define MY_LANGUAGE            fr-FR           // French in France
+#define MY_LANGUAGE            fr-FR           // French in France
 //#define MY_LANGUAGE            he-HE           // Hebrew in Israel
 //#define MY_LANGUAGE            hu-HU           // Hungarian in Hungary
 //#define MY_LANGUAGE            it-IT           // Italian in Italy
@@ -311,7 +311,7 @@
 // -- One wire sensors ----------------------------
                                                  // WARNING: Select none for default one DS18B20 sensor or enable one of the following two options for multiple sensors
 //#define USE_DS18x20_LEGACY                       // Optional for more than one DS18x20 sensors with dynamic scan using library OneWire (+1k5 code)
-#define USE_DS18x20                              // Optional for more than one DS18x20 sensors with id sort, single scan and read retry (+1k3 code)
+//#define USE_DS18x20                              // Optional for more than one DS18x20 sensors with id sort, single scan and read retry (+1k3 code)
 //  #define W1_PARASITE_POWER                      // If using USE_DS18x20 then optimize for parasite powered sensors
 //  #define DS18B20_INTERNAL_PULLUP                // Use INPUT_PULLUP internal pullup resistors for single DS18B20
 
@@ -474,6 +474,105 @@
 //#define FIRMWARE_KNX_NO_EMULATION                // Create sonoff-knx with KNX but without Emulation
 //#define FIRMWARE_DISPLAYS                        // Create sonoff-display with display drivers enabled
 //#define FIRMWARE_MINIMAL                         // Create sonoff-minimal as intermediate firmware for OTA-MAGIC
+
+#define USE_PID         // include the pid feature (+4.3k)
+   #define PID_SETPOINT                  23    	// Setpoint value. This is the process value that the process is
+                                                 // aiming for.
+                                                 // May be adjusted via MQTT using cmnd pid_sp
+
+   #define PID_PROPBAND                  1.5       // Proportional band in process units (eg degrees). This controls
+                                                 // the gain of the loop and is the range of process value over which
+                                                 // the power output will go from 0 to full power. The units are that
+                                                 // of the process and setpoint, so for example in a heating
+                                                 // application it might be set to 1.5 degrees.
+                                                 // May be adjusted via MQTT using cmnd pid_pb
+
+   #define PID_INTEGRAL_TIME             600    // Integral time seconds. This is a setting for the integral time,
+                                                 // in seconds. It represents the time constant of the integration
+                                                 // effect. The larger the value the slower the integral effect will be.
+                                                 // Obviously the slower the process is the larger this should be. For
+                                                 // example for a domestic room heated by convection radiators a setting
+                                                 // of one hour might be appropriate (in seconds). To disable the
+                                                 // integral effect set this to a large number.
+                                                 // May be adjusted via MQTT using cmnd pid_ti
+
+   #define PID_DERIVATIVE_TIME           60      // Derivative time seconds. This is a setting for the derivative time,
+                                                 // in seconds. It represents the time constant of the derivative effect.
+                                                 // The larger the value the greater will be the derivative effect.
+                                                 // Typically this will be set to somewhat less than 25% of the integral
+                                                 // setting, once the integral has been adjusted to the optimum value. To
+                                                 // disable the derivative effect set this to 0. When initially tuning a
+                                                 // loop it is often sensible to start with derivative zero and wind it in
+                                                 // once other parameters have been setup.
+                                                 // May be adjusted via MQTT using cmnd pid_td
+
+   #define PID_INITIAL_INT               0.3     // Initial integral value (0:1). This is an initial value which is used
+                                                 // to preset the integrated error value when the flow is deployed in
+                                                 // order to assist in homing in on the setpoint the first time. It should
+                                                 // be set to an estimate of what the power requirement might be in order
+                                                 // to maintain the process at the setpoint. For example for a domestic
+                                                 // room heating application it might be set to 0.2 indicating that 20% of
+                                                 // the available power might be required to maintain the setpoint. The
+                                                 // value is of no consequence apart from device restart.
+
+   #define PID_MAX_INTERVAL              300     // This is the maximum time in seconds that is expected between samples.
+                                                 // It is provided to cope with unusual situations such as a faulty sensor
+                                                 // that might prevent the node from being supplied with a process value.
+                                                 // If no new process value is received for this time then the power is set
+                                                 // to the value defined for PID_MANUAL_POWER.
+                                                 // May be adjusted via MQTT using cmnd pid_max_interval
+
+   #define PID_DERIV_SMOOTH_FACTOR       3       // In situations where the process sensor has limited resolution (such as
+                                                 // the DS18B20), the use of deriviative can be problematic as when the
+                                                 // process is changing only slowly the steps in the value cause spikes in
+                                                 // the derivative. To reduce the effect of these this parameter can be
+                                                 // set to apply a filter to the derivative term. I have found that with
+                                                 // the DS18B20 that a value of 3 here can be beneficial, providing
+                                                 // effectively a low pass filter on the derivative at 1/3 of the derivative
+                                                 // time. This feature may also be useful if the process value is particularly
+                                                 // noisy. The smaller the value the greater the filtering effect but the
+                                                 // more it will reduce the effectiveness of the derivative. A value of zero
+                                                 // disables this feature.
+                                                 // May be adjusted via MQTT using cmnd pid_d_smooth
+
+   #define PID_AUTO                      1       // Auto mode 1 or 0 (for manual). This can be used to enable or disable
+                                                 // the control (1=enable, auto mode, 0=disabled, manual mode). When in
+                                                 // manual mode the output is set the value definded for PID_MANUAL_POWER
+                                                 // May be adjusted via MQTT using cmnd pid_auto
+
+   #define PID_MANUAL_POWER              0       // Power output when in manual mode or fallback mode if too long elapses
+                                                 // between process values
+                                                 // May be adjusted via MQTT using cmnd pid_manual_power
+
+   #define PID_UPDATE_SECS               120       // How often to run the pid algorithm (integer secs) or 0 to run the algorithm
+                                                 // each time a new pv value is received, for most applictions specify 0.
+                                                 // Otherwise set this to a time
+                                                 // that is short compared to the response of the process.  For example,
+                                                 // something like 15 seconds may well be appropriate for a domestic room
+                                                 // heating application.
+                                                 // May be adjusted via MQTT using cmnd pid_update_secs
+
+   #define PID_USE_TIMPROP               1       // To use an internal relay for a time proportioned output to drive the
+                                                 // process, set this to indicate which timeprop output to use. For a device
+                                                 // with just one relay then this will be 1.
+                                                 // It is then also necessary to define USE_TIMEPROP and set the output up as
+                                                 // explained in xdrv_91_timeprop.ino
+                                                 // To disable this feature leave this undefined (undefined, not defined to nothing).
+
+   #define PID_USE_LOCAL_SENSOR           1      // if defined then the local sensor will be used for pv. Leave undefined if
+                                                 // this is not required.  The rate that the sensor is read is defined by TELE_PERIOD
+                                                 // If not using the sensor then you can supply process values via MQTT using
+                                                 // cmnd pid_pv
+
+#define USE_TIMEPROP    //  include the timeprop feature (+1.2k)
+   // for single output
+   #define TIMEPROP_NUM_OUTPUTS          1       // how many outputs to control (with separate alogorithm for each)
+   #define TIMEPROP_CYCLETIMES           60      // cycle time seconds
+   #define TIMEPROP_DEADTIMES            0       // actuator action time seconds
+   #define TIMEPROP_OPINVERTS            false   // whether to invert the output
+   #define TIMEPROP_FALLBACK_POWERS      0       // falls back to this if too long betwen power updates
+   #define TIMEPROP_MAX_UPDATE_INTERVALS 300     // max no secs that are allowed between power updates (0 to disable)
+   #define TIMEPROP_RELAYS               1       // which relay to control 1:8
 
 /*********************************************************************************************\
  * No user configurable items below
