@@ -100,7 +100,7 @@ void Timeprop_Set_Power( int index, float power )
 {
   if (index >= 0  &&  index < TIMEPROP_NUM_OUTPUTS)
   {
-    timeprops[index].setPower( power, pid_current_time_secs);
+    timeprops[index].setPower( power, timeprop_current_time_secs);
   }
 }
 
@@ -116,14 +116,14 @@ void Timeprop_Init()
 
   for (int i=0; i<TIMEPROP_NUM_OUTPUTS; i++) {
     timeprops[i].initialise(cycleTimes[i], deadTimes[i], opInverts[i], fallbacks[i],
-      maxIntervals[i], pid_current_time_secs);
+      maxIntervals[i], timeprop_current_time_secs);
   }
 }
 
 void Timeprop_Every_Second() {
   timeprop_current_time_secs++;    // increment time
   for (int i=0; i<TIMEPROP_NUM_OUTPUTS; i++) {
-    int newState = timeprops[i].tick(pid_current_time_secs);
+    int newState = timeprops[i].tick(timeprop_current_time_secs);
     if (newState != bitRead(currentRelayStates, relayNos[i]-1)){
       // remove the third parameter below if using tasmota prior to v6.0.0
       ExecuteCommandPower(relayNos[i], newState,SRC_IGNORE);
@@ -180,7 +180,7 @@ boolean Timeprop_Command()
         AddLog(LOG_LEVEL_INFO);
       */
       if (XdrvMailbox.index >=0 && XdrvMailbox.index < TIMEPROP_NUM_OUTPUTS) {
-        timeprops[XdrvMailbox.index].setPower( atof(XdrvMailbox.data), pid_current_time_secs );
+        timeprops[XdrvMailbox.index].setPower( atof(XdrvMailbox.data), timeprop_current_time_secs );
       }
       snprintf_P(mqtt_data, sizeof(mqtt_data), PSTR("{\"" D_CMND_TIMEPROP D_CMND_TIMEPROP_SETPOWER "%d\":\"%s\"}"),
         XdrvMailbox.index, XdrvMailbox.data);
